@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "required": ["scope", "requested_changes", "confidence"],
+  "additionalProperties": false,
+  "properties": {
+    "scope": {
+      "type": "object",
+      "required": ["sites", "devices", "device_roles", "tags"],
+      "properties": {
+        "sites": { "type": "array", "items": { "type": "string" } },
+        "devices": { "type": "array", "items": { "type": "string" } },
+        "device_roles": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "requested_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "payload"],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "add_device",
+              "add_vlan",
+              "add_prefix",
+              "add_ip",
+              "add_firewall_rule",
+              "update_device",
+              "update_ip"
+            ]
+          },
+          "payload": { "type": "object" }
+        }
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "missing_information": { "type": "array", "items": { "type": "string" } },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}

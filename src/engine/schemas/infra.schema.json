@@ -1,0 +1,76 @@
+{
+  "type": "object",
+  "required": ["sites", "devices", "vlans", "prefixes", "ips"],
+  "additionalProperties": true,
+  "properties": {
+    "sites": {
+      "type": "array",
+      "items": { "type": "object", "required": ["name"], "properties": { "name": { "type": "string" } } }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "site"],
+        "properties": {
+          "name": { "type": "string" },
+          "site": { "type": "string" },
+          "device_type": { "type": "string" },
+          "device_role": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["device", "name"],
+        "properties": {
+          "device": { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "type": "string" }
+        }
+      }
+    },
+    "vlans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "site"],
+        "properties": {
+          "vid": { "type": "number" },
+          "name": { "type": "string" },
+          "site": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "prefixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["prefix", "site"],
+        "properties": {
+          "prefix": { "type": "string" },
+          "site": { "type": "string" },
+          "vlan": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "ips": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["address", "device"],
+        "properties": {
+          "address": { "type": "string" },
+          "device": { "type": "string" },
+          "interface": { "type": "string" },
+          "vlan": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required": ["ops"],
+  "additionalProperties": false,
+  "properties": {
+    "ops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["op"],
+        "additionalProperties": true,
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": ["add_device", "add_interface", "add_ip", "ensure_vlan"]
+          }
+        }
+      }
+    }
+  }
+}
