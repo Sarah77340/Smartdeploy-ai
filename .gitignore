@@ -20,8 +20,8 @@ venv/
 Thumbs.db
 
 # Output generated files
-data/output/
-ansible_output/
+#data/output/
+#ansible_output/
 
 # Ollama cache (si jamais)
 *.gguf
