@@ -18,7 +18,6 @@ class KafkaConsumerClient:
         })
         self.consumer.subscribe([self.cfg.topic_in])
 
-        # ✅ 复用 producer，不要每条消息都 new
         self.producer = KafkaProducerClient(self.cfg)
 
         print("BOOTSTRAP=", self.cfg.bootstrap_servers, "TOPIC_IN=", self.cfg.topic_in, "GROUP=", self.cfg.group_id)
@@ -48,27 +47,23 @@ class KafkaConsumerClient:
                             if not f.is_file():
                                 continue
 
-                            # ✅ 防止编码问题
                             preview = f.read_text(encoding="utf-8", errors="replace")
 
                             file_list.append(ResultOutDTO(
                                 jobid=msg_in.jobid,
                                 name=f.name,
-                                path=str(f),                 # ✅ 用完整路径
-                                lang=f.suffix.lstrip("."),   # ✅ "yml" 而不是 ".yml"
+                                path=str(f),
+                                lang=f.suffix.lstrip("."),
                                 preview=preview,
                                 size=len(preview),
                             ))
 
-                    # ✅ 你可以选择：即使没有文件也回传一个空列表（看你 Java 端是否需要）
                     self.producer.send(file_list)
                     self.producer.flush()
 
-                    # ✅ 成功后再 commit
                     self.consumer.commit(message=msg, asynchronous=False)
 
                 except Exception as e:
-                    # 不 commit，让它下次重试（至少一次语义）
                     print(f"handler failed: {e}")
 
         finally:
