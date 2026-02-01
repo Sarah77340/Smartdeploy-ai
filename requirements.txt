@@ -1,0 +1,6 @@
+# Kafka client
+confluent-kafka==2.6.1
+
+# .env gestion
+python-dotenv==1.0.1
+orjson==3.10.7
