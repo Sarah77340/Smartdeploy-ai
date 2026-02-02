@@ -1,0 +1,36 @@
+{
+  "status": "VALID_INTENT_AFTER_REPAIR",
+  "intent": {
+    "scope": {
+      "sites": [
+        "Site1"
+      ],
+      "devices": [],
+      "device_roles": [],
+      "tags": []
+    },
+    "requested_changes": [
+      {
+        "type": "add_device",
+        "payload": {
+          "site": "Site1",
+          "name": "PC02",
+          "vlan": "VLAN10"
+        }
+      },
+      {
+        "type": "add_ip",
+        "payload": {
+          "address": "192.168.10.20/24",
+          "device": "PC02",
+          "interface": "eth0"
+        }
+      }
+    ],
+    "assumptions": [],
+    "missing_information": [],
+    "confidence": 1.0
+  },
+  "issues": [],
+  "questions": []
+}

@@ -10,6 +10,9 @@ INTENT_SCHEMA_PATH = "src/engine/schemas/intent.schema.json"
 INFRA_SCHEMA_PATH = "src/engine/schemas/infra.schema.json"
 PATCH_SCHEMA_PATH = "src/engine/schemas/infra_patch.schema.json"
 
+def _provider(model: str | None = None) -> OllamaProvider:
+    return OllamaProvider(OllamaConfig(model=model or "mistral", temperature=0.0))
+
 def _validate_intent_or_issues(intent: dict) -> list:
     """Return list of issues (empty if valid). Raises if schema invalid."""
     validate_json_schema(intent, INTENT_SCHEMA_PATH)
@@ -26,8 +29,8 @@ def _valid_return(status: str, intent: dict) -> dict:
     }
 
 
-def repair_intent(intent: dict, issues: list, known_sites: list[str]) -> dict:
-    llm = OllamaProvider(OllamaConfig(model="mistral", temperature=0.0))
+def repair_intent(intent: dict, issues: list, known_sites: list[str], model: str | None = None) -> dict:
+    llm = _provider(model)
 
     system_prompt = (
         "You fix invalid network intent JSON.\n"
@@ -54,6 +57,7 @@ Rules:
   {{"address": "x.x.x.x/xx", "device": "NAME", "interface": "NAME"}}
 - Allowed sites: {known_sites}
 - confidence must be > 0 when the intent is clear.
+- Firewall : ONLY use add_firewall_rule. NEVER use update_firewall_rule.
 
 Current (invalid) intent JSON:
 {intent}
@@ -70,8 +74,8 @@ Return the corrected JSON only.
     ])
 
 
-def parse_intent(user_text: str, known_sites: list[str]) -> dict:
-    llm = OllamaProvider(OllamaConfig(model="mistral", temperature=0.0))
+def parse_intent(user_text: str, known_sites: list[str], model: str | None = None) -> dict:
+    llm = _provider(model)
 
     system_prompt = (
         "You convert user requests into a STRICT JSON plan.\n"
@@ -94,6 +98,7 @@ Rules:
 - One action per requested_changes item.
 - Valid types: add_device, add_vlan, add_prefix, add_ip, add_firewall_rule, update_device, update_ip
 - Allowed sites: {known_sites}
+- Firewall : ONLY use add_firewall_rule. NEVER use update_firewall_rule.
 
 User request:
 {user_text}
@@ -109,7 +114,7 @@ User request:
         return _valid_return("VALID_INTENT", out)
 
     # Try repair once
-    repaired = repair_intent(out, issues, known_sites)
+    repaired = repair_intent(out, issues, known_sites, model=model)
     issues_after = _validate_intent_or_issues(repaired)
 
     if not issues_after:
@@ -122,8 +127,8 @@ User request:
     }
 
 
-def generate_infra_candidate(intent: dict, infra_current: dict) -> dict:
-    llm = OllamaProvider(OllamaConfig(model="mistral", temperature=0.0))
+def generate_infra_candidate(intent: dict, infra_current: dict, model: str | None = None) -> dict:
+    llm = _provider(model)
 
     system_prompt = (
         "You generate a target infrastructure JSON.\n"
@@ -150,10 +155,10 @@ Rules:
     ])
 
     validate_json_schema(candidate, INFRA_SCHEMA_PATH)
+    return candidate
 
-
-def generate_infra_patch(intent: dict) -> dict:
-    llm = OllamaProvider(OllamaConfig(model="mistral", temperature=0.0))
+def generate_infra_patch(intent: dict, model: str | None = None) -> dict:
+    llm = _provider(model)
 
     system_prompt = (
         "You generate a minimal patch (operations list) to update an infrastructure inventory.\n"

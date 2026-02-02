@@ -1,0 +1,45 @@
+{
+  "status": "INVALID_INTENT",
+  "issues": [
+    {
+      "code": "VLAN_SITE_MISSING",
+      "message": "VLAN must be attached to a site.",
+      "path": "requested_changes[2]"
+    }
+  ],
+  "intent": {
+    "scope": {
+      "sites": [
+        "Site1"
+      ],
+      "devices": [],
+      "device_roles": [],
+      "tags": []
+    },
+    "requested_changes": [
+      {
+        "type": "add_device",
+        "payload": {
+          "name": "PC02"
+        }
+      },
+      {
+        "type": "add_ip",
+        "payload": {
+          "address": "192.168.10.20/xx",
+          "device": "PC02",
+          "interface": ""
+        }
+      },
+      {
+        "type": "add_vlan",
+        "payload": {
+          "name": "VLAN10"
+        }
+      }
+    ],
+    "assumptions": [],
+    "missing_information": [],
+    "confidence": 0.5
+  }
+}

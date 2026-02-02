@@ -15,6 +15,7 @@ def main():
     # 3) Config pipeline
     cfg = PipelineConfig(
         known_sites=["Site1", "Site2"],
+        llm_model="qwen2.5:latest",
         output_dir="data/output",
         save_intent=True,
         save_patch=True,

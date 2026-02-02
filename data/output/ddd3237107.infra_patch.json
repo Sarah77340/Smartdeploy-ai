@@ -1,0 +1,38 @@
+{
+  "ops": [
+    {
+      "op": "add_device",
+      "device": {
+        "name": "PC02",
+        "site": "Site1",
+        "device_role": "Ordinateur",
+        "device_type": "Windows 10",
+        "status": "pending"
+      }
+    },
+    {
+      "op": "ensure_vlan",
+      "vlan": {
+        "name": "VLAN10",
+        "site": "Site1"
+      }
+    },
+    {
+      "op": "add_interface",
+      "interface": {
+        "device": "PC02",
+        "name": "eth0",
+        "type": "virtual"
+      }
+    },
+    {
+      "op": "add_ip",
+      "ip": {
+        "address": "192.168.10.20/24",
+        "device": "PC02",
+        "interface": "eth0",
+        "vlan": "VLAN10"
+      }
+    }
+  ]
+}

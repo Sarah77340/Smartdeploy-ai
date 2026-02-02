@@ -14,6 +14,7 @@ from src.engine.validators.rules import apply_infra_patch, validate_infra_candid
 @dataclass
 class PipelineConfig:
     known_sites: List[str]
+    llm_model: str = "mistral"
     output_dir: str = "data/output"
     save_intent: bool = True
     save_patch: bool = True
@@ -67,7 +68,7 @@ def run_pipeline(
         _ensure_dir(cfg.output_dir)
 
         ### IA : intent parsing + validation + repair + normalisation
-        intent_result = parse_intent(user_text, known_sites=cfg.known_sites)
+        intent_result = parse_intent(user_text, known_sites=cfg.known_sites, model=cfg.llm_model)
 
         # Sauvegarde intent_result (utile pour debug front)
         if cfg.save_intent:
@@ -94,7 +95,7 @@ def run_pipeline(
         intent = intent_result["intent"]
 
         ### IA : patch minimal
-        patch = generate_infra_patch(intent)
+        patch = generate_infra_patch(intent, model=cfg.llm_model)
 
         if cfg.save_patch:
             p = os.path.join(cfg.output_dir, f"{run_id}.infra_patch.json")

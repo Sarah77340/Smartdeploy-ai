@@ -1,0 +1,148 @@
+{
+  "sites": [
+    {
+      "name": "Site1",
+      "slug": "site1"
+    }
+  ],
+  "manufacturers": [
+    {
+      "name": "Cisco",
+      "slug": "cisco"
+    },
+    {
+      "name": "Microsoft",
+      "slug": "microsoft"
+    }
+  ],
+  "device_types": [
+    {
+      "model": "Cisco 2960",
+      "manufacturer": "Cisco"
+    },
+    {
+      "model": "Windows 10",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "model": "Cisco ASA",
+      "manufacturer": "Cisco"
+    }
+  ],
+  "roles": [
+    {
+      "name": "Switch",
+      "slug": "switch",
+      "color": "blue"
+    },
+    {
+      "name": "Ordinateur",
+      "slug": "ordinateur",
+      "color": "green"
+    },
+    {
+      "name": "Firewall",
+      "slug": "firewall",
+      "color": "red"
+    }
+  ],
+  "devices": [
+    {
+      "name": "SW01",
+      "site": "Site1",
+      "device_type": "Cisco 2960",
+      "device_role": "Switch",
+      "status": "active"
+    },
+    {
+      "name": "PC01",
+      "site": "Site1",
+      "device_type": "Windows 10",
+      "device_role": "Ordinateur",
+      "status": "active"
+    },
+    {
+      "name": "FW01",
+      "site": "Site1",
+      "device_type": "Cisco ASA",
+      "device_role": "Firewall",
+      "status": "active"
+    },
+    {
+      "name": "PC02",
+      "site": "Site1",
+      "device_role": "Ordinateur",
+      "device_type": "Windows 10",
+      "status": "pending"
+    }
+  ],
+  "interfaces": [
+    {
+      "device": "SW01",
+      "name": "Ethernet0",
+      "type": "virtual"
+    },
+    {
+      "device": "PC01",
+      "name": "eth0",
+      "type": "virtual"
+    },
+    {
+      "device": "FW01",
+      "name": "Gig0/0",
+      "type": "virtual"
+    },
+    {
+      "device": "PC02",
+      "name": "eth0",
+      "type": "virtual"
+    }
+  ],
+  "vlans": [
+    {
+      "vid": 101,
+      "name": "VLAN10",
+      "site": "Site1"
+    }
+  ],
+  "prefixes": [
+    {
+      "prefix": "192.168.10.0/24",
+      "site": "Site1",
+      "vlan": "VLAN10",
+      "status": "active"
+    }
+  ],
+  "ips": [
+    {
+      "address": "192.168.1.10/24",
+      "device": "SW01",
+      "interface": "Ethernet0",
+      "vlan": "VLAN10"
+    },
+    {
+      "address": "192.168.10.1/24",
+      "device": "FW01",
+      "interface": "Gig0/0",
+      "vlan": "VLAN10"
+    },
+    {
+      "address": "192.168.10.20/24",
+      "device": "PC02",
+      "interface": "eth0",
+      "vlan": "VLAN10"
+    }
+  ],
+  "firewall_rules": [
+    {
+      "firewall": "FW01",
+      "name": "allow_web",
+      "source": "192.168.10.0/24",
+      "destination": "0.0.0.0/0",
+      "service": "tcp/80",
+      "action": "allow",
+      "position": 10,
+      "status": "pending"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "status": "VALID_INTENT_AFTER_REPAIR",
+  "intent": {
+    "scope": {
+      "sites": [
+        "Site1"
+      ],
+      "devices": [],
+      "device_roles": [],
+      "tags": []
+    },
+    "requested_changes": [
+      {
+        "type": "add_device",
+        "payload": {
+          "name": "PC02",
+          "site": "Site1"
+        }
+      },
+      {
+        "type": "add_ip",
+        "payload": {
+          "address": "192.168.10.20/24",
+          "device": "PC02",
+          "interface": ""
+        }
+      },
+      {
+        "type": "add_vlan",
+        "payload": {
+          "name": "VLAN10",
+          "site": "Site1"
+        }
+      }
+    ],
+    "assumptions": [],
+    "missing_information": [],
+    "confidence": 0.8
+  },
+  "issues": [
+    {
+      "code": "ASSUMED_IP_MASK",
+      "severity": "WARN",
+      "message": "IP mask missing; assumed /24.",
+      "path": "requested_changes[].payload.address"
+    }
+  ],
+  "questions": [
+    {
+      "id": "NEED_INTERFACE",
+      "text": "Quelle interface pour l'IP 192.168.10.20/24 sur PC02 ? (ex: eth0)",
+      "path": "requested_changes[].payload.interface"
+    }
+  ]
+}

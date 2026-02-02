@@ -1,0 +1,311 @@
+{
+  "summary": [
+    {
+      "model": "mistral",
+      "total_score_sum": 50,
+      "avg_time_s": 279.63634455995634,
+      "worst_p95_time_s": 323.1884506196482
+    },
+    {
+      "model": "qwen2.5:latest",
+      "total_score_sum": 40,
+      "avg_time_s": 200.95470353993588,
+      "worst_p95_time_s": 214.8041262200568
+    },
+    {
+      "model": "llama3.1:8b",
+      "total_score_sum": 40,
+      "avg_time_s": 203.57966455998832,
+      "worst_p95_time_s": 219.05649635000154
+    }
+  ],
+  "results": [
+    {
+      "model": "mistral",
+      "test_id": "Test basic 1",
+      "avg_time_s": 279.63634455995634,
+      "p95_time_s": 323.1884506196482,
+      "stability_unique_outputs": 1,
+      "scores": {
+        "strict_60": 40,
+        "candidate_20": 0,
+        "time_10": 0,
+        "stability_10": 10,
+        "total_100": 50
+      },
+      "issues": [
+        "Expected IP outside prefix, but intent IP appears within known prefixes.",
+        "Failed to generate infra_candidate: 'requested_changes'"
+      ],
+      "representative_hash": "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f",
+      "unique_hashes": [
+        "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "time_s": 210.77613629982807,
+          "hash": "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f"
+        },
+        {
+          "run": 2,
+          "time_s": 289.31712769996375,
+          "hash": "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f"
+        },
+        {
+          "run": 3,
+          "time_s": 294.26121050002985,
+          "hash": "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f"
+        },
+        {
+          "run": 4,
+          "time_s": 311.27723409980536,
+          "hash": "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f"
+        },
+        {
+          "run": 5,
+          "time_s": 292.5500142001547,
+          "hash": "f8874e514244c2802fe6fa36c0e7cb9e1428f13914ba871d9b2abd15a5ec568f"
+        }
+      ],
+      "representative_output": {
+        "status": "VALID_INTENT_AFTER_REPAIR",
+        "intent": {
+          "scope": {
+            "sites": [
+              "Site1"
+            ],
+            "devices": [],
+            "device_roles": [],
+            "tags": []
+          },
+          "requested_changes": [
+            {
+              "type": "add_device",
+              "payload": {
+                "name": "PC02",
+                "site": "Site1"
+              }
+            },
+            {
+              "type": "add_ip",
+              "payload": {
+                "address": "192.168.10.20/24",
+                "device": "PC02",
+                "interface": ""
+              }
+            },
+            {
+              "type": "add_vlan",
+              "payload": {
+                "name": "VLAN10",
+                "site": "Site1"
+              }
+            }
+          ],
+          "assumptions": [],
+          "missing_information": [],
+          "confidence": 0.8
+        },
+        "issues": [
+          {
+            "code": "ASSUMED_IP_MASK",
+            "severity": "WARN",
+            "message": "IP mask missing; assumed /24.",
+            "path": "requested_changes[].payload.address"
+          }
+        ],
+        "questions": [
+          {
+            "id": "NEED_INTERFACE",
+            "text": "Quelle interface pour l'IP 192.168.10.20/24 sur PC02 ? (ex: eth0)",
+            "path": "requested_changes[].payload.interface"
+          }
+        ]
+      }
+    },
+    {
+      "model": "qwen2.5:latest",
+      "test_id": "Test basic 1",
+      "avg_time_s": 200.95470353993588,
+      "p95_time_s": 214.8041262200568,
+      "stability_unique_outputs": 1,
+      "scores": {
+        "strict_60": 30,
+        "candidate_20": 0,
+        "time_10": 0,
+        "stability_10": 10,
+        "total_100": 40
+      },
+      "issues": [
+        "No add_vlan action found (might be OK if VLAN already exists).",
+        "Expected IP outside prefix, but intent IP appears within known prefixes.",
+        "Failed to generate infra_candidate: 'requested_changes'"
+      ],
+      "representative_hash": "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b",
+      "unique_hashes": [
+        "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "time_s": 210.5352366999723,
+          "hash": "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b"
+        },
+        {
+          "run": 2,
+          "time_s": 204.4368230998516,
+          "hash": "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b"
+        },
+        {
+          "run": 3,
+          "time_s": 196.86827099998482,
+          "hash": "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b"
+        },
+        {
+          "run": 4,
+          "time_s": 199.33254830003716,
+          "hash": "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b"
+        },
+        {
+          "run": 5,
+          "time_s": 193.60063859983347,
+          "hash": "25544d49953103d04195e8f951f1bbf6923d56c0d1af358b988a25aa5f3d107b"
+        }
+      ],
+      "representative_output": {
+        "status": "VALID_INTENT_AFTER_REPAIR",
+        "intent": {
+          "scope": {
+            "sites": [
+              "Site1"
+            ],
+            "devices": [],
+            "device_roles": [],
+            "tags": []
+          },
+          "requested_changes": [
+            {
+              "type": "add_device",
+              "payload": {
+                "site": "Site1",
+                "name": "PC02",
+                "vlan": "VLAN10"
+              }
+            },
+            {
+              "type": "add_ip",
+              "payload": {
+                "address": "192.168.10.20/24",
+                "device": "PC02",
+                "interface": ""
+              }
+            }
+          ],
+          "assumptions": [],
+          "missing_information": [],
+          "confidence": 1.0
+        },
+        "issues": [],
+        "questions": [
+          {
+            "id": "NEED_INTERFACE",
+            "text": "Quelle interface pour l'IP 192.168.10.20/24 sur PC02 ? (ex: eth0)",
+            "path": "requested_changes[].payload.interface"
+          }
+        ]
+      }
+    },
+    {
+      "model": "llama3.1:8b",
+      "test_id": "Test basic 1",
+      "avg_time_s": 203.57966455998832,
+      "p95_time_s": 219.05649635000154,
+      "stability_unique_outputs": 1,
+      "scores": {
+        "strict_60": 30,
+        "candidate_20": 0,
+        "time_10": 0,
+        "stability_10": 10,
+        "total_100": 40
+      },
+      "issues": [
+        "No add_vlan action found (might be OK if VLAN already exists).",
+        "Expected IP outside prefix, but intent IP appears within known prefixes.",
+        "Failed to generate infra_candidate: 'requested_changes'"
+      ],
+      "representative_hash": "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1",
+      "unique_hashes": [
+        "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "time_s": 214.7123239999637,
+          "hash": "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1"
+        },
+        {
+          "run": 2,
+          "time_s": 208.50636349990964,
+          "hash": "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1"
+        },
+        {
+          "run": 3,
+          "time_s": 197.29185019992292,
+          "hash": "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1"
+        },
+        {
+          "run": 4,
+          "time_s": 196.7309368001297,
+          "hash": "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1"
+        },
+        {
+          "run": 5,
+          "time_s": 200.65684830001555,
+          "hash": "38127b2f0b8aa9f246609c380e8774b720ce075689d517d0d6c879820542a3f1"
+        }
+      ],
+      "representative_output": {
+        "status": "VALID_INTENT_AFTER_REPAIR",
+        "intent": {
+          "scope": {
+            "sites": [
+              "Site1"
+            ],
+            "devices": [],
+            "device_roles": [],
+            "tags": []
+          },
+          "requested_changes": [
+            {
+              "type": "add_device",
+              "payload": {
+                "site": "Site1",
+                "device_name": "PC02"
+              }
+            },
+            {
+              "type": "add_ip",
+              "payload": {
+                "address": "192.168.10.20/xx",
+                "device": "PC02",
+                "interface": ""
+              }
+            }
+          ],
+          "assumptions": [],
+          "missing_information": [],
+          "confidence": 1.0
+        },
+        "issues": [],
+        "questions": [
+          {
+            "id": "NEED_INTERFACE",
+            "text": "Quelle interface pour l'IP 192.168.10.20/xx sur PC02 ? (ex: eth0)",
+            "path": "requested_changes[].payload.interface"
+          }
+        ]
+      }
+    }
+  ]
+}

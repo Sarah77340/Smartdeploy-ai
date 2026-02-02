@@ -1,0 +1,100 @@
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 5.0.0"
+    }
+  }
+}
+
+provider "google" {
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
+}
+
+# --- Networks (1 VPC per site) ---
+{% for net in networks %}
+resource "google_compute_network" "{{ net.tf_name }}" {
+  name                   = "{{ net.name }}"
+  auto_create_subnetworks = false
+}
+{% endfor %}
+
+# --- Subnets (1 subnet per prefix) ---
+{% for sn in subnets %}
+resource "google_compute_subnetwork" "{{ sn.tf_name }}" {
+  name          = "{{ sn.name }}"
+  region        = var.region
+  ip_cidr_range = "{{ sn.cidr }}"
+  network       = google_compute_network.{{ sn.network_tf_name }}.self_link
+}
+{% endfor %}
+
+# --- Instances (VMs) ---
+{% for vm in vms %}
+resource "google_compute_instance" "{{ vm.tf_name }}" {
+  name         = "{{ vm.name }}"
+  machine_type = "{{ vm.machine_type }}"
+  zone         = var.zone
+
+  tags = {{ vm.tags | tojson }}
+
+  boot_disk {
+    initialize_params {
+      image = "{{ vm.image }}"
+    }
+  }
+
+  network_interface {
+    subnetwork = google_compute_subnetwork.{{ vm.subnet_tf_name }}.self_link
+    {% if vm.internal_ip %}
+    network_ip = "{{ vm.internal_ip }}"
+    {% endif %}
+    access_config {}
+  }
+
+  metadata = {
+    "enable-oslogin" = "TRUE"
+  }
+}
+{% endfor %}
+
+# --- Baseline firewall (SSH always, HTTP/HTTPS optional) ---
+{% for fw in baseline_firewalls %}
+resource "google_compute_firewall" "{{ fw.tf_name }}" {
+  name    = "{{ fw.name }}"
+  network = google_compute_network.{{ fw.network_tf_name }}.name
+
+  direction = "INGRESS"
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = {{ fw.target_tags | tojson }}
+
+  allow {
+    protocol = "{{ fw.protocol }}"
+    {% if fw.ports_expr %}
+    ports = [{{ fw.ports_expr }}]
+    {% else %}
+    ports = {{ fw.ports_list | tojson }}
+    {% endif %}
+  }
+}
+{% endfor %}
+
+# --- Custom firewall rules from infra_candidate.firewall_rules ---
+{% for r in fw_rules %}
+resource "google_compute_firewall" "{{ r.tf_name }}" {
+  name    = "{{ r.name }}"
+  network = google_compute_network.{{ r.network_tf_name }}.name
+
+  direction = "INGRESS"
+  source_ranges = {{ r.source_ranges | tojson }}
+  target_tags = {{ r.target_tags | tojson }}
+
+  allow {
+    protocol = "{{ r.protocol }}"
+    ports    = {{ r.ports | tojson }}
+  }
+}
+{% endfor %}
