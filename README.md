@@ -19,7 +19,7 @@ Patch Apply (deterministic)
    ↓
 Infra Validation
    ↓
-Ansible Artifact Generation
+Terraform Artifact Generation (GCP)
 ```
 
 ---
@@ -31,6 +31,9 @@ Ansible Artifact Generation
 | Python 3.10+ | Windows |
 | Ollama | Windows |
 | Model `mistral` | Ollama |
+| Terraform | Not require locally |
+
+Not Anymore
 | WSL + Ubuntu | For Ansible execution |
 | Ansible + community.general | Inside WSL |
 
@@ -41,8 +44,8 @@ Ansible Artifact Generation
 | Task | Terminal |
 |------|----------|
 | Python development, running AI pipeline | Windows PowerShell |
-| Running Ansible playbooks | WSL (Ubuntu) |
 | Ollama server & model testing | Windows PowerShell |
+
 
 ---
 
@@ -68,6 +71,12 @@ ollama serve
 
 ```powershell
 ollama pull mistral
+ollama pull qwen2.5
+ollama pull llama3.1:8b
+ollama pull codestral:22b
+ollama pull codellama:7b
+ollama pull deepseek-coder:1.3b
+ollama pull starcoder2:3b
 ```
 
 ---
@@ -100,6 +109,9 @@ Located in `data/`:
 | `run_infra_test.py` | Tests intent → infra patch → infra candidate generation |
 | `run_pipeline_test.py` | Full AI pipeline end-to-end |
 | `run_ansible_test.py` | Generates Ansible files from infra_candidate |
+| `benchmark_models.py` | General LLM benchmark (json + speed) |
+| `benchmark_strict_network.py` | Network aware benchmark (real pipeline) |
+| `run_terraform_test.py` | Generates Terraform files from infra_candidate |
 
 ---
 
@@ -131,6 +143,21 @@ Outputs:
 ansible_output/
  ├── hosts.ini
  └── site.yml
+```
+
+---
+
+# Generate Terraform Files
+
+```powershell
+python run_terraform_test.py
+```
+
+Outputs:
+
+```
+terraform_output/
+ └── main.tf
 ```
 
 ---
@@ -174,9 +201,15 @@ ansible-playbook -i ansible_output/hosts.ini ansible_output/site.yml --ask-becom
 # Project Stage
 
 This is the MVP of SmartDeploy:
-- AI planning engine
-- Deterministic validation
-- Patch-based infra generation
-- Executable Ansible baseline
+- AI intent understanding
+- Schema-based validation
+- Deterministic patch application
+- Infrastructure synthesis
+- Terraform generation for GCP
+- Multi-model benchmarking framework
 
-Next evolution: multi-host automation and advanced network templates.
+Next evolution: 
+- Multi-site scaling
+- Advanced firewall mapping
+- NetBox live API sync
+- LLM selection automation based on benchmark scores
